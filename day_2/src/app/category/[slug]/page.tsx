@@ -1,4 +1,5 @@
 import React from "react";
+import { notFound } from "next/navigation";
 
 type ICategoryDetailProps = {
   params: {
@@ -6,6 +7,10 @@ type ICategoryDetailProps = {
   };
 };
 function CategoryDetail({ params }: ICategoryDetailProps) {
+  if (params.slug !== "car" && params.slug !== "food") {
+    notFound();
+  }
+
   return <h1>{params.slug}Detail!</h1>;
 }
 
