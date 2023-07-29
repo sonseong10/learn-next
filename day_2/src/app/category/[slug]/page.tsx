@@ -1,24 +1,26 @@
 import React from "react";
 import { notFound } from "next/navigation";
+import { getCategory, getCategorys } from "@/service/category";
 
 type ICategoryDetailProps = {
   params: {
     slug: string;
   };
 };
-function CategoryDetail({ params }: ICategoryDetailProps) {
-  if (params.slug !== "car" && params.slug !== "food") {
+async function CategoryDetail({ params: { slug } }: ICategoryDetailProps) {
+  const category = await getCategory(slug);
+  if (!category) {
     notFound();
   }
 
-  return <h1>{params.slug}Detail!</h1>;
+  return <h1>{category.name} Detail!</h1>;
 }
 
 export default CategoryDetail;
 
-export function generateStaticParams() {
-  const popularCategory = ["car", "food"];
+export async function generateStaticParams() {
+  const popularCategory = await getCategorys();
   return popularCategory.map((category) => ({
-    slug: category,
+    slug: category.name,
   }));
 }
